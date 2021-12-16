@@ -24,38 +24,37 @@ $monthList = [
 //définition des constantes de début et de fin pour les années
 define('START_YEAR', 1982);
 define('END_YEAR', 2098);
-
-//Création du tableau d'erreur
-$errorList = [];
+var_dump($_POST);
 
 //On vérifie que le formulaire a bien été selectionné
-if(isset($_POST['calendarShow'])){
-    var_dump($_POST);
+if (isset($_POST['calendarShow'])) {
+    //Création du tableau d'erreur
+    $errorList = [];
     //On vérifie que le mois a bien été renseigné
-    if(!empty($_POST['month'])){
+    if (!empty($_POST['month'])) {
         //on vérifie que la saisie est bien une clé du tableau $monthList
-        if(array_key_exists($_POST['month'], $monthList)){
+        if (array_key_exists($_POST['month'], $monthList)) {
             //On stocke le mois dans une variable
-            $month = $_POST['month'];
-        }else{
+            $monthSelected = $_POST['month'];
+        } else {
             //Si la clé n'existe pas, on ajoute une erreur
             $errorList['month'] = 'Le mois renseigné n\'est pas valide.';
         }
-    }else{
+    } else {
         $errorList['month'] = 'Veuillez renseigner un mois.';
     }
 
     //On vérifie que l'année a bien été renseignée
-    if(!empty($_POST['year'])){
+    if (!empty($_POST['year'])) {
         //On vérifie que l'année est bien entre les bornes définies
-        if($_POST['year'] >= START_YEAR && $_POST['year'] <= END_YEAR){
+        if ($_POST['year'] >= START_YEAR && $_POST['year'] <= END_YEAR) {
             //On stocke l'année dans une variable
-            $year = $_POST['year'];
-        }else{
+            $yearSelected = $_POST['year'];
+        } else {
             //Si l'année n'est pas dans les bornes, on ajoute une erreur
             $errorList['year'] = 'L\'année renseignée n\'est pas valide.';
         }
-    }else{
+    } else {
         $errorList['year'] = 'Veuillez renseigner une année.';
     }
 }
@@ -93,9 +92,20 @@ if(isset($_POST['calendarShow'])){
             <?php } ?>
         </select>
         <p><small><?= isset($errorList['year']) ? $errorList['year'] : '' ?></small></p>
-
         <input type="submit" value="Afficher" name="calendarShow" id="calendarShow">
     </form>
+    <!-- Si je n'ai pas d'erreur dans le formulaire, je peux afficher le calendrier -->
+<?php
+if(isset($errorList) && count($errorList) === 0){ 
+    $dayinMonth = cal_days_in_month(CAL_GREGORIAN, $monthSelected, $yearSelected);
+    ?>
+<ul>
+    <li>Nombre de jour dans le mois de <?= $monthList[$monthSelected] ?> <?= $yearSelected ?>  : <?= $dayinMonth ?></li>
+    <li>Le premier jour du mois de <?= $monthList[$monthSelected] ?> <?= $yearSelected ?> : <?= date('N l',mktime(0,0,0,$monthSelected,1,$yearSelected)) ?></li>
+</ul>
+<?php 
+var_dump($errorList);
+} ?>
 
 </body>
 
