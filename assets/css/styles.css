@@ -1,0 +1,20 @@
+table{
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 20px;
+}
+th{
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #ddd;
+}
+td{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+td.empty{
+    border: 1px solid #ddd;
+    padding: 8px;
+    background-color: #f2f2f2;
+}
